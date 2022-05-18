@@ -1,0 +1,146 @@
+
+<?php
+   session_start();
+   include '../database/connect.php';
+    if(isset($_SESSION['user'])){
+        //$username=$_SESSION['user'];
+        $username=7;
+
+        $result=mysqli_fetch_array(mysqli_query($conn,"SELECT user_id FROM tbl_user WHERE user_name='$username'"));
+        $user_id=$result['user_id'];
+
+        $result2=mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM tbl_cart WHERE user_id='$user_id'"));
+
+        $cart_id=$result2['cart_id'];      
+
+        $pdt="SELECT * FROM tbl_cart INNER JOIN tbl_cart_detail ON tbl_cart.cart_id=tbl_cart_detail.cart_id WHERE tbl_cart.cart_id=$cart_id";
+        $q=mysqli_query($conn,$pdt);
+        $cart=[];
+        while($row=mysqli_fetch_array($q)){
+            $cart[]=$row;
+        }
+    }
+    else{
+        $cart=[];
+    }
+    // echo "<pre>";
+    // print_r($cart);
+
+    include 'cart_function.php';
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/cart_style.css">
+    <link rel="stylesheet" href="../font/fontawesome-free-6.1.1-web/css/all.css">
+
+</head>
+<body>
+    <div class="cart_container">
+          
+        <h1>Giỏ hàng</h1>
+        <div class="cart_detail">
+            <div class="cart_title">
+                <div class="cart_title_item cart_img">
+                </div>
+                <div class="cart_title_item cart_name">
+                    <p>Tên sản phẩm</p>
+                </div>
+                <div class="cart_title_item cart_qty">
+                    <p>Số lượng</p>
+                </div>
+                <div class="cart_title_item cart_price">
+                    <p>Giá tiền</p>
+                </div>
+                <div class="cart_title_item cart_remove">
+                </div>
+            </div>
+            <div class="cart_list">
+     
+       <form action="cart.php" method="GET"> 
+            
+            <?php foreach($cart as $key=>$value): ?> 
+                             
+                <div class="cart_item">
+                    <div class="cart_img">
+                        <a href=""><img src="../img/product/<?php echo $value['product_image']?>" alt=""></a>
+                    </div>
+                    <div class="cart_name">
+                        <a href="">	<?php echo $value['product_name'] ?></a>
+                    </div>
+                    <div class="cart_qty">
+                    <input type="hidden" name="action" value="update">
+                    <input type="hidden" name="id" value="<?php echo $value['product_id']?>">
+                            <p><input type="number" name="quantity[<?=$value['id']?>]" value="<?php echo $value['product_quantity']?>" min=1> </p>  
+                        
+                    </div>
+                    <div class="cart_price">
+                        <p><?php echo $value['product_price'] ?></p>
+                    </div>
+
+                    <div class="cart_remove">
+                        <a href="cart.php?id=<?php echo $value['id']?>&action=delete">Xóa</a>
+                   
+                    </div>
+                </div>
+                
+            <?php endforeach?>
+
+
+
+                <!-- <div class="cart_item">
+                    <div class="cart_img">
+                        <a href=""><img src="../Image/product_image/pdt2.png" alt=""></a>
+                    </div>
+                    <div class="cart_name">
+                        <a href="">Re: Zero - Bắt Đầu Lại Ở Thế Giới Khác - 12</a>
+                    </div>
+                    <div class="cart_qty">
+                        <p><input type="number" value="1" min=1></p>   
+                    </div>
+                    <div class="cart_price">
+                        <p>VND 102.000</p>
+                    </div>
+                    <div class="cart_remove">
+                        <a href="">Xóa</a>
+                    </div>
+                </div> -->
+            </div>
+            <div class="cart_total">
+                <div class="cart_img"></div>
+                <div class="cart_name"></div>
+                <div class="cart_qty"><p>Tổng cộng</p></div>
+             
+                <div class="cart_price"><p><?php echo total($cart) ?> </p></div>
+            </div>
+        
+
+        <div class="cart_btn">
+            <div class="cart_return">
+                <a href="skincare.php">
+                    <i class="fa-solid fa-reply"></i>
+                    <p>Tiếp tục mua hàng</p>
+                </a>
+            </div>
+
+                <button type="submit" onclick="" name="action" value="order">
+               <a href="order.php" class="payment"> Thanh toán<i class="fa-solid fa-angles-right"></i></a> 
+                
+             </button>
+ 
+                    <button type="submit" onclick="" name="action" value="update">
+                    Cập nhật
+                    <i class="fa-solid fa-angles-right"></i>
+                    </button>      
+       </form>    
+            
+        </div>
+
+    </div>
+</body>
+</html>
