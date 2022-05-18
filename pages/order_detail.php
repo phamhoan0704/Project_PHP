@@ -1,8 +1,8 @@
 <?php 
-    include '../../Database/connect.php';
+    include '../database/connect.php';
     session_start();
-    $od_id=$_GET['id'];
-
+    //$od_id=$_GET['id'];
+$od_id=83;
     $query_order_detail=mysqli_query($conn,"SELECT* FROM tbl_order WHERE order_id=$od_id");
     $order_result=mysqli_fetch_array($query_order_detail);
 
