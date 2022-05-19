@@ -9,6 +9,10 @@ html {
     box-sizing: border-box;
 }
 
+a:hover {
+    text-decoration: none;
+}
+
 body {
     background-color: #f7f7f7;
 }
@@ -16,6 +20,8 @@ body {
 .content {
     margin-left: auto;
     margin-right: auto;
+    width: var(--home-width);
+    padding-bottom: 104px;
 }
 
 .home-hero-container {
@@ -29,16 +35,11 @@ body {
 }
 
 :root {
-    --home-width: 80%;
+    --home-width: 90%;
 }
 
 .carousel-control {
     width: 5%;
-}
-
-.content {
-    width: var(--home-width);
-    padding-bottom: 44px;
 }
 
 
@@ -49,6 +50,7 @@ body {
     justify-content: space-between;
     margin: 0 auto 0;
     flex-wrap: wrap;
+    width: 90%;
 }
 
 .home-policy-item {

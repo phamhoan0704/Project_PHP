@@ -6,7 +6,7 @@ if (!isset($_SESSION['user']))
 else {
     $name = $phone = $img = $email = "";
     $user = $_SESSION['user'];
-    include 'connect.php';
+    include '../database/connect.php';
     $sql = "Select* from tbl_user where user_name='$user';";
     $query = mysqli_query($conn, $sql);
     while ($data = mysqli_fetch_array($query)) {
@@ -60,7 +60,7 @@ else {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="../css/information.css">
-    <link rel="stylesheet" href="../Font/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="../font/fontawesome/css/all.min.css">
 </head>
 
 <body>
