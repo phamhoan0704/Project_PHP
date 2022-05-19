@@ -1,6 +1,6 @@
 <?php
     session_start();
-    $_SESSION['user'] = 'admin4';
+   // $_SESSION['user'] = 'admin4';
     $user_active = false;
     if(isset($_SESSION['user'])) $user_active=true;   
     include "../database/connect.php";

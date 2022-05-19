@@ -1,5 +1,6 @@
 <?php
-       session_start();
+    include 'header.php';
+      // session_start();
     //    if(isset($_SESSION['cart'])){
     //        $cart=$_SESSION['cart'];
     //    }
@@ -79,7 +80,6 @@
                 WHERE product_id=$value[product_id]");
             }
           header("location: home.php");
-         // unset($_SESSION['cart']);
         }  
         else{
             echo mysqli_error($conn);
@@ -189,23 +189,15 @@
         <div class="order_item ">
             <div class="order_pdt">
                 <h1>Sản phẩm</h1>
-
                 <div class="order_list_pdt">
                     <table>
                         <?php foreach($cart as $key=>$value): ?>
                         <tr>
                             <td><a href=""class="order_pdt_img"><img src="../img/product/<?php echo $value['product_image'] ?>" alt=""></a></td>
                             <td><a href="" ><?php echo $value['product_name'] ?></a>  </td>
-                            <td><?php echo $value['product_mount'] ?></td>
-                            <td><p><?php echo $value['product_price'] ?></p></td>
+                            <td><?php echo $value['product_amount'] ?></td>
+                            <td><?php echo $value['product_price'] ?></td>
                         </tr>
-
-                        <!-- <tr>
-                            <td><a href="" class="order_pdt_img"><img src="../Image/product_image/pdt2.png" alt=""></a></td>
-                            <td><a href="">Re: Zero - Bắt Đầu Lại Ở Thế Giới Khác - 12</a>  </td>
-                            <td>1</td>
-                            <td><p>VND 102.000</p> </td>
-                        </tr> -->
                         <?php endforeach?>
                     </table>
 
@@ -248,5 +240,6 @@
         }
      </script>
     </form>
+    <?php include 'footer.php'  ?>
 </body>
 </html>
