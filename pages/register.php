@@ -1,5 +1,6 @@
 <?php
-session_start();
+include('./header.php');
+include('../database/connect.php');
 //tạo hàm chuẩn hóa lại dữ liệu do người dùng nhập vào
 function test_input($data)
 {
@@ -13,70 +14,82 @@ function test_input($data)
 }
 //định nghĩa các biến và khởi tạo rỗng
 $username = $pass = $passAgain = $email = $phone = "";
-$usernameErr = $passErr = $passAgainErr = $emailErr = $phoneErr = $register="";
-include 'connect.php';
+$usernameErr = $passErr = $passAgainErr = $emailErr = $phoneErr = $register = "";
+
 //Kiểm tra nếu người dùng bấm submit chưa
 if (isset($_POST['submit_btn'])) {
     if (empty($_POST['ipnName'])) {
-        $register=$usernameErr = "Tên người dùng không được để trống";
-    } else {
-        $username = $_POST['ipnName'];
-        $regUserName = '/^\\w+$/';
-        if (!preg_match($regUserName, $username))
-        $register=$usernameErr = "Tên đăng nhập có trên 4 kí tự chữ cái và số!";
-        else{
-        $sqli="SELECT * from tbl_uer when user_name='$username';";
-        $result=mysqli_query($conn,$sqli);
-        $num_rows=mysqli_num_rows($result);
-        if($num_rows!=0)
-        $usernameErr=$register="Tên đăng nhập này đã tồn tại !";
+        $register = $usernameErr = "Tên người dùng không được để trống";
     }
+     else {
+        $username = $_POST['ipnName'];
+        $regUserName = '/^\\w*$/';
+        if (!preg_match($regUserName, $username))
+            $register = $usernameErr = "Tên đăng nhập có trên 4 kí tự chữ cái và số!";
+        else 
+        {
+            $sqli = "SELECT * from tbl_user where user_name='$username';";
+            $query = mysqli_query($conn, $sqli);
+            $num_rows = mysqli_num_rows($query);
+            if ($num_rows != 0)
+                $usernameErr = $register = "Tên đăng nhập này đã tồn tại !";
+        }
     }
     if (empty($_POST['ipnPass']))
-    $register=$passErr = "Mật khẩu không được để trống";
+        $register = $passErr = "Mật khẩu không được để trống";
     else {
         $pass = $_POST['ipnPass'];
         $regPass = '/((?=.*\\d)(?=.*[a-z])(?=.*[@#$%!]).{4,20})/';
-        if (!preg_match($regPass, $pass)) {
-            $register=$passErr = "Mật khẩu dài trên 6 kí tự gồm chữ cái, số, kí tự đặc biệt!";
+        if (!preg_match($regPass, $pass)) 
+        {
+            $register = $passErr = "Mật khẩu dài trên 6 kí tự gồm chữ cái, số, kí tự đặc biệt!";
         }
     }
     if (empty($_POST['ipnPassAgain'])) {
-        $register=$passAgainErr = "Xác nhận lại mật khẩu";
-    } else {
+        $register = $passAgainErr = "Xác nhận lại mật khẩu";
+    } else 
+    {
         $passAgain = $_POST['ipnPassAgain'];
-        if (!$passAgain == $pass) {
-            $register=$passAgainErr = "Mật khẩu không trùng khớp!";
-        }
+        if (!$passAgain == $pass) 
+        {
+            $register = $passAgainErr = "Mật khẩu không trùng khớp!";
+        } else
+            $passmd5 = md5($passAgain);
     }
     if (empty($_POST['ipnEmail'])) {
-        $register=$emailErr = "Email không được để trống!";
+        $register = $emailErr = "Email không được để trống!";
     } else {
         $email = $_POST['ipnEmail'];
         $regEmail = '/^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/';
         if (!preg_match($regEmail, $email))
-        $register=$emailErr = "Email không đúng định dạng text123@gmail.com";
+            $register = $emailErr = "Email không đúng định dạng text123@gmail.com";
     }
     if (empty($_POST['ipnPhone']))
-    $register=$phoneErr = "Số điện thoại không được để trống!";
+        $register = $phoneErr = "Số điện thoại không được để trống!";
     else {
         $phone = $_POST['ipnPhone'];
         $regPhone = '/^\\d+$/';
         if (!preg_match($regPhone, $phone))
-        $register= $phoneErr = "Chỉ bao gồm chữ số!";
+            $register = $phoneErr = "Chỉ bao gồm chữ số!";
     }
-    if($register==""){
-            $sql="INSERT into tbl_user(`User_name`, `user_Password`, `User_email`, `user_phone`,User_type) values('$username','$pass',$email,'$phone',1)";
-            if(mysqli_query($conn,$sql)){
-                echo "Tạo tài khoản thành công!";
-            }
-            else 
-            echo "Error ".mysqli_error($conn);
-            
-        }
-        mysqli_close($conn);
+    if (empty($register)) {
+        $sql = "INSERT INTO `tbl_user`( `user_name`, `user_password`, `user_email`, `user_phone`, `user_type`)
+         values ('$username','$passmd5','$email','$phone','1');";
+        if (mysqli_query($conn, $sql)) {
+            $user_id=$conn->insert_id;       
+            $sql2="INSERT INTO `tbl_cart`(`user_id`) VALUES('$user_id')";
+            mysqli_query($conn,$sql2);
+              // header("location:./log_in.php");
+         echo "<script>window.location.href='./log_in.php'</script>";
+        } else
+            echo "Error " . mysqli_error($conn);
+    }
+    {
         
-    
+    mysqli_close($conn);
+        
+
+    }
 }
 
 ?>
@@ -214,15 +227,19 @@ if (isset($_POST['submit_btn'])) {
                         </div>
 
                     </div> -->
+                    <div class="sp1">
+                        <span>Bạn đã có tài khoản? Đăng nhập <a href="../includes/log_in.php">Tại đây</a></span>
+                    </div>
 
-                    <span>Bạn đã có tài khoản? Đăng nhập <a href="../includes/log_in.php">Tại đây</a></span>
 
                 </div>
 
             </form>
         </div>
+    </div>
 
-        <script src="../js/register.js"></script>
+    <script src="../js/register.js"></script>
 </body>
 
 </html>
+<?php include('./footer.php') ?>;

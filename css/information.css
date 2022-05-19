@@ -10,7 +10,7 @@
     padding: 1.25rem 0 3.15rem;
     margin-right: auto;
     margin-left: auto;
-    width: 1000px;
+    width: 1200px;
 }
 
 .left_menu {
@@ -21,7 +21,7 @@
 }
 
 .box_infor {
-    width: 980px;
+    width: 1020px;
     box-sizing: border-box;
     margin-left: 1.6875rem;
     min-width: 0;
@@ -35,7 +35,6 @@
     padding: 0 30px 10px;
     position: relative;
     min-height: 100%;
-
     position: relative;
     min-height: 100%;
 }
@@ -210,4 +209,13 @@ label {
     background:none;
     border:1px #efefef solid;
     border-radius: 0.1rem;
+}
+.btn2 input{
+    width: 82px;
+}
+.fileimg span{
+    display:block;
+    color:  #868585  ;
+    text-align: center;
+    /* padding-left:1.75rem; */
 }

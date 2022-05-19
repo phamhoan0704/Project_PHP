@@ -1,4 +1,5 @@
 <?php
+
     include 'header.php';
     include "../database/connect.php";
     //Lấy sp theo Sách mới
@@ -23,34 +24,32 @@
     GROUP BY tbl_product.product_id, tbl_product.product_image, tbl_product.product_name, tbl_product.product_price, tbl_product.product_price_pre, product_discount
     order by tong";
 
-    $result1 = mysqli_query($conn, $sql1);
-    $data1 = array();
-    if(mysqli_num_rows($result1) > 0)
-        while($row = mysqli_fetch_array($result1, 1))
-        {
-            $data1[] = $row;
-        }
-    
-    //Lấy sp theo Sách hot deal
-    
+
+$result1 = mysqli_query($conn, $sql1);
+$data1 = array();
+if (mysqli_num_rows($result1) > 0)
+    while ($row = mysqli_fetch_array($result1, 1)) {
+        $data1[] = $row;
+    }
+
 
     $sql2 = "
     SELECT tbl_product.product_id, tbl_product.product_image, tbl_product.product_name, tbl_product.product_price, tbl_product.product_price_pre, (100-round((tbl_product.product_price / tbl_product.product_price_pre)*100,0)) as 'product_discount' 
+
     FROM tbl_product
     Order by product_discount desc;
     ";
 
-    $result2 = mysqli_query($conn, $sql2);
-    $data2 = array();
-    if(mysqli_num_rows($result2) > 0)   
-        while($row = mysqli_fetch_array($result2, 1))
-        {
-            $data2[] = $row;
-        }
+$result2 = mysqli_query($conn, $sql2);
+$data2 = array();
+if (mysqli_num_rows($result2) > 0)
+    while ($row = mysqli_fetch_array($result2, 1)) {
+        $data2[] = $row;
+    }
 
 
-    mysqli_close($conn);
-    
+mysqli_close($conn);
+
 ?>
 
 <!DOCTYPE html>
@@ -67,11 +66,11 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="../css/product_list.css">
     <link rel="stylesheet" href="../css/home.css">
-    
+
 </head>
 
 <body>
-    
+
     <div id="main">
         <div class="home-hero-container">
         <div id="slideShow" class="carousel slide" data-ride="carousel">
@@ -101,6 +100,7 @@
                     </div>
                 </div>
 
+
                 <!-- Left and right controls -->
                 <a class="left carousel-control" href="#slideShow" data-slide="prev">
                     <span class="glyphicon glyphicon-chevron-left"></span>
@@ -110,6 +110,7 @@
                     <span class="glyphicon glyphicon-chevron-right"></span>
                     <span class="sr-only">Next</span>
                 </a>
+
             </div>
         </div>
         <div class="content">
@@ -170,15 +171,24 @@
                     <div class="home-tab-pane active">
                         <div class="product-list">
                             <?php
+
                                 for($i=0;$i<count($data);$i++) {
                                     echo '
+
                                     <div class="product-block">
                                         <div class="product__sale">
-                                            <span class="sale-lable">- '.$data[$i]['product_discount'].'%</span>
+                                            <span class="sale-lable">- ' . $data[$i]['product_discount'] . '%</span>
                                         </div>
+
                                         <a href="productdetail.php?id='.$data[$i]['product_id'].'" class="product__img" style="background-image: url(../img/product/'.$data[$i]['product_image'].');">
+
                                         </a>
+                                       
+                                        <div class="pdt_icon">
+                                        <a href="./cart_view.php"><i class="fa-solid fa-cart-arrow-down"></i></a>
+                                        </div>
                                         <div class="product__detail">
+
                                             <a href="productdetail.php?id='.$data[$i]['product_id'].'" class="product__name">'.$data[$i]['product_name'].'</a>
                                             <div class="product__price">
                                                 <p class="pro-price__new">'.number_format($data[$i]['product_price']).'đ</p>
@@ -189,7 +199,7 @@
                                     if($i == 16) break;
                                 }
 
-                               
+
                             ?>
                             <!-- <div class="product-block">
                                 <div class="product__sale">
@@ -216,13 +226,14 @@
                     <div class="home-tab-pane">
                         <!-- Sách bán chạy -->
                         <div class="product-list">
-                            <?php    
-                                for($i=0;$i<count($data1);$i++) {
-                                    echo '
+                            <?php
+                            for ($i = 0; $i < count($data1); $i++) {
+                                echo '
                                     <div class="product-block">
                                         <div class="product__sale">
-                                            <span class="sale-lable">- '.$data1[$i]['product_discount'].'%</span>
+                                            <span class="sale-lable">- ' . $data1[$i]['product_discount'] . '%</span>
                                         </div>
+
                                         <a href="productdetail.php?id='.$data1[$i]['product_id'].'" class="product__img" style="background-image: url(../img/product/'.$data1[$i]['product_image'].');">
                                         </a>
                                         <div class="product__detail">
@@ -236,23 +247,24 @@
                                     if($i == 16) break;
                                 }
 
-                               
+
                             ?>
                         </div>
                         <div class="home-tab-pane-btn">
                             <a href="" class="btn-more">Xem thêm</a>
-                        </div>   
+                        </div>
                     </div>
                     <div class="home-tab-pane">
                         <!-- Sách hot deal -->
                         <div class="product-list">
-                            <?php    
-                                for($i=0;$i<count($data2);$i++) {
-                                    echo '
+                            <?php
+                            for ($i = 0; $i < count($data2); $i++) {
+                                echo '
                                     <div class="product-block">
                                         <div class="product__sale">
-                                            <span class="sale-lable">- '.$data2[$i]['product_discount'].'%</span>
+                                            <span class="sale-lable">- ' . $data2[$i]['product_discount'] . '%</span>
                                         </div>
+
                                         <a href="productdetail.php?id='.$data2[$i]['product_id'].'" class="product__img" style="background-image: url(../img/product/'.$data2[$i]['product_image'].');">
                                         </a>
                                         <div class="product__detail">
@@ -267,12 +279,12 @@
                                     
                                 }
 
-                               
+
                             ?>
                         </div>
                         <div class="home-tab-pane-btn">
                             <a href="" class="btn-more">Xem thêm</a>
-                        </div> 
+                        </div>
                     </div>
                 </div>
             </div>
@@ -294,8 +306,9 @@
             </div>
         </div>
     </div>
-    
+
     <?php include 'footer.php'; ?>
     <script src="../js/home_tab.js "></script>
 </body>
+
 </html>

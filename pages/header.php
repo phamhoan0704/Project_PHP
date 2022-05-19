@@ -1,5 +1,6 @@
 <?php
 
+
     include "../database/connect.php";
     $user_active = false;
     $total = 0;
@@ -42,6 +43,7 @@
         $total = $data2[0]['total'];  
     } 
                
+
     //Lấy dữ liệu category
     $sql1 = "SELECT * From tbl_category";
                     
@@ -53,8 +55,11 @@
             $data1[] = $row;
         }
 
+
+
     
     mysqli_close($conn);
+
 ?>
 
 <!DOCTYPE html>
@@ -80,6 +85,8 @@
                     Công ty cổ phần xuất bản và truyền thông Trí Tuệ
                 </div>
                 <div class="site-topbar__user<?=$user_active?"active":""?>">
+
+
                     <a href="information.php" class="site-topbar__user-name">Xin chào : <?php echo $_SESSION['user'];?></a>
                     <span class="sep">|</span>
                     <a href="log_out.php" class="site-topbar__logout">Đăng xuất</a>
@@ -88,6 +95,7 @@
                     <a href="log_in.php" class="site-topbar__user-name">Đăng nhập </a>
                     <span class="sep">|</span>
                     <a href="register.php" class="site-topbar__logout"> Đăng kí</a>
+
                 </div>
             </div>
         </div>

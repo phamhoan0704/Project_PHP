@@ -1,6 +1,8 @@
+
 <?php  
    //include 'header.php';
     include '../database/connect.php';
+
 
     //session_start();
     //$od_id=$_GET['id'];

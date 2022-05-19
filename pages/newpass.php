@@ -1,4 +1,5 @@
-<?php session_start();
+<?php 
+include('./header.php');
 if (!isset($_SESSION['user'])) {
     header('Location:log_in.php');
 } else {
@@ -58,5 +59,6 @@ if (!isset($_SESSION['user'])) {
     }
 }
 include 'changepassword.php';
+include'./footer.php';
 mysqli_close($conn);
 ?>
