@@ -1,4 +1,5 @@
 <?php
+include './header.php';
 include 'connect.php';
 $id = 40;
 if (!empty($id))
@@ -11,7 +12,7 @@ if (!$query) echo "loi";
 else {
     while ($product = mysqli_fetch_array($query)) {
         $name = $product['product_name'];
-        $img = $product['product_image'];
+        $image = $product['product_image'];
         $year = $product['product_year'];
         $price = $product['product_price'];
         $price_pre = $product['product_price_pre'];
@@ -50,7 +51,8 @@ WHERE tbl_product.product_id='$id';";
         <div class="wapper">
             <div class="product_img">
                 <div class="box_img">
-                    <img src="../img/<?php echo ".$image" ?>" alt="">
+                    <img src="../img/product/<?php echo "$image"?>" alt="">
+                    
                 </div>
             </div>
             <div class="product_infor">
@@ -64,15 +66,15 @@ WHERE tbl_product.product_id='$id';";
                 </div>
                 <div class="procduct_detial">
                     <div class="tbl">
-                        <div class="row">
+                        <div class="row1">
                             <strong>Tác Giả</strong>
                             <span><?php echo $authorname ?></span>
                         </div>
-                        <div class="row">
+                        <div class="row1">
                             <strong>Nhà Xuất Bản</strong>
                             <span><?php echo $suppliername ?></span>
                         </div>
-                        <div class="row">
+                        <div class="row1">
                             <strong>Năm Xuất Bản<strong>
                                     <span><?php echo $year ?></span>
                         </div>
@@ -87,7 +89,7 @@ WHERE tbl_product.product_id='$id';";
                         </div>
                     </div>
                     <div class="box">
-                        <form method="post">
+                        <form method="post" action='order'>
                             <div class="boxwapp">
                                 <div class="box2">
                                     <div class="select_quantity">
@@ -102,7 +104,7 @@ WHERE tbl_product.product_id='$id';";
                                 </div>
                                 <div class="btnsubmit">
                                     <input type="button" id="ipt1" value="Thêm vào giỏ hàng" name="addcart">
-                                    <input type="button" id="ipt2" value="Mua ngay" name="ordernow">
+                                   <a href="./order.php?id=<?php echo $id?>"><input type="button" id="ipt2" value="Mua ngay" name="ordernow"></a>
                                 </div>
                             </div>
                         </form>
@@ -112,6 +114,7 @@ WHERE tbl_product.product_id='$id';";
         </div>
     </div>
 </body>
+<?php include './footer.php';?>
 
 </html>
 <script>

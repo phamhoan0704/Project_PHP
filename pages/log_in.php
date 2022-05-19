@@ -1,5 +1,5 @@
 <?php
-
+include('./header.php');
 $iName = $iPass = $loginErr = "";
     $nameErr = $passErr = "";
 //Lưu ý: empty và isset sẽ trả về TRUE nếu biến không tồn tại 
@@ -33,12 +33,14 @@ if (isset($_POST['submit_btn'])) {
     } else {
         if (!preg_match($patternPass, $iPass))
             $passErr = "Mật khẩu không đúng";
+            else
+            $passmd5=md5($iPass);
     }
     //Kết nối đến csdl
-    include 'connect.php';
+    include '../database/connect.php';
     //câu lệnh sql
     
-    $sql = "select *from tbl_user where user_name='$iName' and user_password='$iPass' ";
+    $sql = "select *from tbl_user where user_name='$iName' and user_password='$passmd5' ";
     $query = mysqli_query($conn, $sql);
     $num_rows = mysqli_num_rows($query);
     if ($num_rows == 0) {
@@ -48,7 +50,11 @@ if (isset($_POST['submit_btn'])) {
        $_SESSION['user']=$iName;
         //thực thi hành động sua khi lưu thông tin
         //=> chuyển hướng trang web tới một tragn index.php
-        // header('Location:changepassword.php');
+        if($_GET['action']=='cart'){
+            echo "<script>window.location.href='./cart_view.php'</script>";
+        }
+        else
+       echo "<script>window.location.href='./home.php'</script>";
     }
 }
 
@@ -119,9 +125,16 @@ if (isset($_POST['submit_btn'])) {
                 <div class="submit_btn">
                     <button name="submit_btn">Đăng nhập</button>
                 </div>
-                <span><a>Quên mật khẩu</a></span>
-                <span>Bạn đã có tài khoản chưa? Đăng ký <a href="../includes/register.html">Tại đây</a></span>
+                <div class="sp1">
+                <div>
+                <span ><a>Quên mật khẩu</a></span>
 
+                </div>
+                <div>
+
+                <span >Bạn đã có tài khoản chưa? Đăng ký <a href="../includes/register.html">Tại đây</a></span>
+                </div>
+                </div>
 
                 </from>
         </div>
@@ -131,3 +144,4 @@ if (isset($_POST['submit_btn'])) {
 </body>
 
 </html>
+<?php include('./footer.php');

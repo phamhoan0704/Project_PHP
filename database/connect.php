@@ -1,5 +1,5 @@
 <?php
-$conn = mysqli_connect("localhost","root","","webmypham");
+$conn = mysqli_connect("localhost","root","","webbantruyen");
 mysqli_set_charset($conn,"utf8");
 // Check connection
 /* if ($conn -> connect_errno) {

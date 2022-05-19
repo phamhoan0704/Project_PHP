@@ -1,5 +1,7 @@
-<?php $usernameErr = $fullnameErr = $phoneErr = $emailErr =$submit=$fullname="";
-session_start();
+<?php
+include('./header.php');
+$usernameErr = $fullnameErr = $phoneErr = $emailErr = $submit = $fullname = "";
+
 
 if (!isset($_SESSION['user']))
     header('Location:log_in.php');
@@ -14,13 +16,13 @@ else {
         $phone = $data['user_phone'];
         $img = $data['user_image'];
         $email = $data['user_email'];
-        $fullname=$data['user_fullname'];
+        $fullname = $data['user_fullname'];
     }
     if (isset($_POST['btnsubmit'])) {
         if (empty($_POST['fullname']))
-            $submit=$fullnameErr = "Họ tên không được để trống!";
-            else
-            $fullname=$_POST['fullname'];
+            $submit = $fullnameErr = "Họ tên không được để trống!";
+        else
+            $fullname = $_POST['fullname'];
         if (empty($_POST['email'])) {
             $submit = $emailErr = "Email không được để trống!";
         } else {
@@ -37,16 +39,18 @@ else {
             if (!preg_match($regPhone, $phone))
                 $submit = $phoneErr = "Chỉ bao gồm chữ số!";
         }
-        if($submit=="")
-        {
-            $sql1="update tbl_user set user_email='$email',user_phone='$phone',user_fullname='$fullname' where user_name='$user';";
-            if(mysqli_query($conn,$sql1)){
+        if (empty($_POST['avataruser'])) {
+            $img = "";
+        } else {
+            $img = $_POST['avataruser'];
+        }
+        if ($submit == "") {
+            $sql1 = "update tbl_user set user_email='$email',user_phone='$phone',user_image='$img',user_fullname='$fullname' where user_name='$user';";
+            if (mysqli_query($conn, $sql1)) {
             }
         }
-    }
-    else
-        echo "lỗi";
-    }
+    } else;
+}
 
 ?>
 
@@ -66,7 +70,7 @@ else {
 <body>
     <div class="container">
         <div class="left_menu">
-            <?php include 'menuleft.php' ?>
+            <?php include './menuleft.php' ?>
         </div>
         <div class="box_infor">
             <div class="box_inforx">
@@ -87,7 +91,7 @@ else {
                                     <div class="inpuif">
                                         <div class="input">
                                             <input type="text" name="username" value="<?php echo "$name"; ?>" readonly>
-                                           
+
                                         </div>
 
                                         <div class="btn">
@@ -162,23 +166,30 @@ else {
                                     </div>
                                 </div>
                             </div>
-                        </form>
+
                     </div>
                     <div class="imgbox2">
                         <div class="avatarbox">
                             <a href="" class="avatar">
                                 <div class="frame-avatar2">
                                     <div class="avatar-img2">
-                                        <i class="fa-regular fa-user"></i>
+                                        <i class="fa-regular fa-user">
+                                            <img src="../img/user/<?php echo $img ?>" alt="">
+                                        </i>
                                     </div>
                                 </div>
                             </a>
                             <div class="btn2">
-                                <button>Chọn ảnh</button>
+                                <input type="file" value="Chọn Ảnh" name="avataruser">
+                                <div class="fileimg">
+                                    <span>Dung lượng file tối đa 1MB</span>
+                                    <span>Định đạng:.JPG,.PNG</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                </form>
             </div>
         </div>
     </div>
@@ -186,3 +197,4 @@ else {
 </body>
 
 </html>
+<?php include('./footer.php');

@@ -1,16 +1,24 @@
 <?php
     session_start();
-    $_SESSION['user'] = 'admin4';
-    $user_active = false;
-    if(isset($_SESSION['user'])) $user_active=true;   
+    //$_SESSION['user'] = 'admin4';
+   $total=0;   
+    if(!isset($_SESSION['user'])) {
+       
+        $user_active = false;
+    }
+    else{
+    $user= $_SESSION['user'] ;
+    echo $user;
+    $user_active=true;   
     include "../database/connect.php";
     // Lây dữ liệu product
+    
     $sql = " SELECT tbl_product.product_image, tbl_product.product_name, tbl_product.product_price, tbl_cart_detail.product_quantity 
         From tbl_cart 
         inner join tbl_user on tbl_user.user_id = tbl_cart.user_id 
         inner join tbl_cart_detail on tbl_cart.cart_id = tbl_cart_detail.cart_id 
         inner join tbl_product on tbl_product.product_id = tbl_cart_detail.product_id 
-        where user_name = 'admin4'; 
+        where user_name = '$user'; 
         ";
 
     $result = mysqli_query($conn, $sql);
@@ -35,8 +43,8 @@
     $sql2 = "SELECT count(*) as 'total' From tbl_cart 
     inner join tbl_user on tbl_user.user_id = tbl_cart.user_id 
     inner join tbl_cart_detail on tbl_cart.cart_id = tbl_cart_detail.cart_id 
-    where user_name = 'admin4';";
-                
+    where user_name = '$user';";
+          
     $result2 = mysqli_query($conn, $sql2);
     $data2 = array();
     if(mysqli_num_rows($result2) > 0)
@@ -56,7 +64,7 @@
     //     }
     // $number = $data3[0]['number'];
     // $page = ceil($number / 12);        
-     mysqli_close($conn);
+     mysqli_close($conn); }
 ?>
 
 <!DOCTYPE html>
@@ -82,14 +90,14 @@
                     Công ty cổ phần xuất bản và truyền thông Trí Tuệ
                 </div>
                 <div class="site-topbar__user<?=$user_active?"active":""?>">
-                    <a href="/acount" class="site-topbar__user-name"><span>Xin chào: Nguyễn Hải Luyến</span></a>
+                    <a href="./information.php" class="site-topbar__user-name"><span>Xin chào: <?php echo $_SESSION['user']?></span></a>
                     <span class="sep">|</span>
-                    <a href="log_out.php" class="site-topbar__logout"><span>Đăng xuất</span></a>
+                    <a href="./log_out.php" class="site-topbar__logout"><span>Đăng xuất</span></a>
                 </div>
                 <div class="site-topbar__user<?=$user_active?"":"active"?>">
-                    <a href="/acount" class="site-topbar__user-name"><span>Đăng nhập</span></a>
+                    <a href="./log_in.php" class="site-topbar__user-name"><span>Đăng nhập</span></a>
                     <span class="sep">|</span>
-                    <a href="" class="site-topbar__logout"><span>Đăng kí</span></a>
+                    <a href="./register.php" class="site-topbar__logout"><span>Đăng kí</span></a>
                 </div>
             </div>
         </div>

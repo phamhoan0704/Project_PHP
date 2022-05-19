@@ -4,7 +4,7 @@
    include '../database/connect.php';
     if(isset($_SESSION['user'])){
         //$username=$_SESSION['user'];
-        $username=7;
+      $username=$_SESSION['user'];
 
         $result=mysqli_fetch_array(mysqli_query($conn,"SELECT user_id FROM tbl_user WHERE user_name='$username'"));
         $user_id=$result['user_id'];
@@ -21,6 +21,7 @@
         }
     }
     else{
+        echo "<script>window.location.href='./log_in.php?action=cart'</script>";
         $cart=[];
     }
     // echo "<pre>";

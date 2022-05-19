@@ -94,3 +94,40 @@
     font-weight: 300;
     color: #666;
 }
+/* ----------------------------- */
+.product-block{
+    position: relative;
+}
+
+.pdt_icon a{
+    display: block;
+    color: green;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    border: 1px solid rgb(194, 192, 192);
+    border-radius: 50%;
+    margin-bottom: 30px;  
+    background-color: #fff;
+}
+.pdt_icon span{
+    color:red;
+}
+.pdt_icon{
+    
+    position: absolute;
+    font-size: 20px;   
+    display: none;
+    bottom: 65px;
+    right: 0px;
+    line-height: 40px;
+}
+.product-block:hover .pdt_icon{
+    display: block;
+    animation-name: move_icon;
+    animation-duration: 0.5s;
+}
+@keyframes move_icon {
+    0%   {right: -10px;opacity: 0;}
+    100% {right: 10px;opacity: 70%;}
+}

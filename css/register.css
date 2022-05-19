@@ -137,11 +137,11 @@
     border-radius:0.3rem;
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-span{
+.sp1 span{
     display:block;
     padding:1px 1px 10px;
 }
-span>a{
+.sp1 span>a{
     color:blue;
 
 }

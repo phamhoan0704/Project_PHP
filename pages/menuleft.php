@@ -1,3 +1,16 @@
+<?php include('../database/connect.php');
+
+$img="";
+if(!isset($_SESSION['user']))
+echo"<script>window.location.href='./log_in.php'<script>";
+else{
+    $username=$_SESSION['user'];
+    $sql="SELECT * FROM tbl_user WHERE user_name='$username';";
+    $reslut=mysqli_fetch_array(mysqli_query($conn,$sql));
+    $img=$reslut['user_image'];
+
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,7 +25,7 @@
 <div class="left_menu">
             <div class="profile">
                 <div class="imgbox">
-                    <a href="" class="avatar">
+                    <a href="..img/user/<?php echo $img?>" class="avatar">
                         <div class="frame-avatar">
                             <div class="avatar-img">
                                 <i class="fa-regular fa-user"></i>
@@ -48,7 +61,7 @@
                             <a href="information.php">Hồ sơ</a>
                             <a href="">Ngân Hàng</a>
                             <a href="">Địa chỉ</a>
-                            <a href="changepassword.php">Đổi mật khẩu</a>
+                            <a href="./newpass.php">Đổi mật khẩu</a>
 
                         </div>
                     </div>
@@ -56,7 +69,7 @@
                 </div>
                 <div class="stardust-dropdown">
                     <div class="stardust-dropdown-header">
-                        <a href="">
+                        <a href="./user_order_list.php">
                             <div class="imgPurchase">
                                 <img src="../img/purchase.png" alt="">
                             </div>
