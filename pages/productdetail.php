@@ -1,6 +1,8 @@
 <?php
-include 'connect.php';
-$id = 40;
+include '../database/connect.php';
+//$id = 39;
+$id = $_GET['id'];
+
 if (!empty($id))
 
 
