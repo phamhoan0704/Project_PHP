@@ -1,10 +1,11 @@
 
 <?php
-   session_start();
+include 'header.php';
+   //session_start();
    include '../database/connect.php';
     if(isset($_SESSION['user'])){
         //$username=$_SESSION['user'];
-        $username=7;
+        $username=$_SESSION['user'];
 
         $result=mysqli_fetch_array(mysqli_query($conn,"SELECT user_id FROM tbl_user WHERE user_name='$username'"));
         $user_id=$result['user_id'];
@@ -13,14 +14,18 @@
 
         $cart_id=$result2['cart_id'];      
 
-        $pdt="SELECT * FROM tbl_cart INNER JOIN tbl_cart_detail ON tbl_cart.cart_id=tbl_cart_detail.cart_id WHERE tbl_cart.cart_id=$cart_id";
-        $q=mysqli_query($conn,$pdt);
+        $pdt="SELECT * FROM tbl_cart INNER JOIN tbl_cart_detail ON tbl_cart.cart_id=tbl_cart_detail.cart_id
+        INNER JOIN tbl_product ON tbl_product.product_id=tbl_cart_detail.product_id
+         WHERE tbl_cart.cart_id=$cart_id";
+         $q=mysqli_query($conn,$pdt);
         $cart=[];
         while($row=mysqli_fetch_array($q)){
             $cart[]=$row;
+
         }
     }
     else{
+        echo "<script>window.location.href='log_in.php?action=cart'</script>";
         $cart=[];
     }
     // echo "<pre>";
@@ -68,31 +73,27 @@
                              
                 <div class="cart_item">
                     <div class="cart_img">
-                        <a href=""><img src="../img/product/<?php echo $value['product_image']?>" alt=""></a>
+                        <a href="productdetail.php?id=<?php echo $value["product_id"]?>"><img src="../img/product/<?php echo $value['product_image']?>" alt=""></a>
                     </div>
                     <div class="cart_name">
-                        <a href="">	<?php echo $value['product_name'] ?></a>
+                        <a href="productdetail.php?id=<?php echo $value["product_id"]?>">	<?php echo $value['product_name'] ?></a>
                     </div>
                     <div class="cart_qty">
-                    <input type="hidden" name="action" value="update">
-                    <input type="hidden" name="id" value="<?php echo $value['product_id']?>">
-                            <p><input type="number" name="quantity[<?=$value['id']?>]" value="<?php echo $value['product_quantity']?>" min=1> </p>  
-                        
+                    <!-- <input type="hidden" name="action" value="update">
+                    <input type="hidden" name="id" value="<?php echo $value['product_id']?>"> -->
+                    <p><input type="number" name="quantity[<?=$value['product_id']?>]" value="<?php echo $value['product_amount']?>" min=1> </p>  
                     </div>
                     <div class="cart_price">
                         <p><?php echo $value['product_price'] ?></p>
                     </div>
 
                     <div class="cart_remove">
-                        <a href="cart.php?id=<?php echo $value['id']?>&action=delete">Xóa</a>
+                        <a href="cart.php?id=<?php echo $value['product_id']?>&action=delete">Xóa</a>
                    
                     </div>
                 </div>
                 
             <?php endforeach?>
-
-
-
                 <!-- <div class="cart_item">
                     <div class="cart_img">
                         <a href=""><img src="../Image/product_image/pdt2.png" alt=""></a>
@@ -122,14 +123,14 @@
 
         <div class="cart_btn">
             <div class="cart_return">
-                <a href="skincare.php">
+                <a href="home.php">
                     <i class="fa-solid fa-reply"></i>
                     <p>Tiếp tục mua hàng</p>
                 </a>
             </div>
 
                 <button type="submit" onclick="" name="action" value="order">
-               <a href="order.php" class="payment"> Thanh toán<i class="fa-solid fa-angles-right"></i></a> 
+               Thanh toán<i class="fa-solid fa-angles-right"></i>
                 
              </button>
  
@@ -137,10 +138,10 @@
                     Cập nhật
                     <i class="fa-solid fa-angles-right"></i>
                     </button>      
-       </form>    
-            
+       </form>           
         </div>
-
     </div>
+    </div>
+    <?php include 'footer.php'?>
 </body>
 </html>

@@ -35,7 +35,7 @@ if (isset($_POST['submit_btn'])) {
             $passErr = "Mật khẩu không đúng";
     }
     //Kết nối đến csdl
-    include 'connect.php';
+    include '../database/connect.php';
     //câu lệnh sql
     
     $sql = "select *from tbl_user where user_name='$iName' and user_password='$iPass' ";
@@ -46,6 +46,10 @@ if (isset($_POST['submit_btn'])) {
     } else {
         //Lưu tên đăng nhập và mật khẩu vào session để tiện xử lý sau này
        $_SESSION['user']=$iName;
+       if($_GET['action']=='cart'){
+        header('location: cart_view.php');
+
+       }
         //thực thi hành động sua khi lưu thông tin
         //=> chuyển hướng trang web tới một tragn index.php
         // header('Location:changepassword.php');

@@ -1,5 +1,5 @@
 <?php
-    session_start();    
+
     include "../database/connect.php";
     $user_active = false;
     $total = 0;

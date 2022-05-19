@@ -1,30 +1,50 @@
 <?php
+    include 'header.php';
+      // session_start();
+    //    if(isset($_SESSION['cart'])){
+    //        $cart=$_SESSION['cart'];
+    //    }
+    //    else{
+    //        $cart=[];
+    //    }
+        include 'cart_function.php';
+        include 'order_function.php';
+        include '../database/connect.php';
 
-       session_start();
-       if(isset($_SESSION['cart'])){
-           $cart=$_SESSION['cart'];
-       }
-       else{
-           $cart=[];
-       }
+    // if(!isset($_SESSION["user"])){
+    //      header("location:login.php?action=order");
+    // }
+    if(isset($_SESSION['user'])){
+        //$username=$_SESSION['user'];
+        $username=$_SESSION['user'];
 
-       include 'cart_function.php';
-       include 'order_function.php';
-       include '../database/connect.php';
+        $result=mysqli_fetch_array(mysqli_query($conn,"SELECT user_id FROM tbl_user WHERE user_name='$username'"));
+        $user_id=$result['user_id'];
 
-    if(!isset($_SESSION["user"])){
-         header("location:login.php?action=order");
+        $result2=mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM tbl_cart WHERE user_id='$user_id'"));
+
+        $cart_id=$result2['cart_id'];      
+
+        $pdt="SELECT * FROM tbl_cart INNER JOIN tbl_cart_detail ON tbl_cart.cart_id=tbl_cart_detail.cart_id
+        INNER JOIN tbl_product ON tbl_product.product_id=tbl_cart_detail.product_id
+         WHERE tbl_cart.cart_id=$cart_id";
+         $q=mysqli_query($conn,$pdt);
+        $cart=[];
+        while($row=mysqli_fetch_array($q)){
+            $cart[]=$row;
+
+        }
+    }
+    else{
+        $cart=[];
     }
     mysqli_set_charset($conn,'utf8');
-   
 ?>
 <?php
     $user=$_SESSION["user"];
-
     $id_user_query= mysqli_query($conn, "SELECT user_id FROM tbl_user WHERE user_name='$user'");
     $user_row=mysqli_fetch_array($id_user_query);
     $id_user=$user_row['user_id'];
-
     if(isset($_POST['name'])){
         $status=1;
         $date=date("Y/m/d");
@@ -34,6 +54,7 @@
         $email=$_POST["email"];
         $total=total($cart);
         $delivery=delivery_fee(total($cart));
+        $t=$total+$delivery;
         $note=$_POST['note'];
         if(isset($_POST['payment']))
         {
@@ -47,22 +68,18 @@
         }
  
         $query=mysqli_query($conn,"INSERT INTO tbl_order(user_id,order_name,order_phone,order_email,order_address,order_date,order_status,order_total,order_delivery,order_note,order_payment)
-         VALUES ('$id_user','$name','$phone','$email','$addess','$date','$status','$total','$delivery','$note','$payment_method')");
-
-        
+         VALUES ('$id_user','$name','$phone','$email','$addess','$date','$status','$t','$delivery','$note','$payment_method')");
 
         if($query){
             $id_order=mysqli_insert_id($conn);
             foreach($cart as $value){
                 mysqli_query($conn,"INSERT INTO tbl_order_detail(order_id,product_id,order_quantity,order_price)
-                 VALUES('$id_order','$value[id]','$value[quantity]','$value[price]')");
+                 VALUES('$id_order','$value[product_id]','$value[product_mount]','$value[product_price]')");
 
-
-                $query_product=mysqli_query($conn,"UPDATE tbl_product SET product_quantity=product_quantity-$value[quantity]
-                WHERE product_id=$value[id]");
+                $query_product=mysqli_query($conn,"UPDATE tbl_product SET product_quantity=product_quantity-$value[product_mount]
+                WHERE product_id=$value[product_id]");
             }
           header("location: home.php");
-          unset($_SESSION['cart']);
         }  
         else{
             echo mysqli_error($conn);
@@ -172,23 +189,15 @@
         <div class="order_item ">
             <div class="order_pdt">
                 <h1>Sản phẩm</h1>
-
                 <div class="order_list_pdt">
                     <table>
                         <?php foreach($cart as $key=>$value): ?>
                         <tr>
-                            <td><a href=""class="order_pdt_img"><img src="../img/product/<?php echo $value['image'] ?>" alt=""></a></td>
-                            <td><a href="" ><?php echo $value['name'] ?></a>  </td>
-                            <td><?php echo $value['quantity'] ?></td>
-                            <td><p><?php echo $value['price'] ?></p></td>
+                            <td><a href=""class="order_pdt_img"><img src="../img/product/<?php echo $value['product_image'] ?>" alt=""></a></td>
+                            <td><a href="" ><?php echo $value['product_name'] ?></a>  </td>
+                            <td><?php echo $value['product_amount'] ?></td>
+                            <td><?php echo $value['product_price'] ?></td>
                         </tr>
-
-                        <!-- <tr>
-                            <td><a href="" class="order_pdt_img"><img src="../Image/product_image/pdt2.png" alt=""></a></td>
-                            <td><a href="">Re: Zero - Bắt Đầu Lại Ở Thế Giới Khác - 12</a>  </td>
-                            <td>1</td>
-                            <td><p>VND 102.000</p> </td>
-                        </tr> -->
                         <?php endforeach?>
                     </table>
 
@@ -231,5 +240,6 @@
         }
      </script>
     </form>
+    <?php include 'footer.php'  ?>
 </body>
 </html>

@@ -19,13 +19,18 @@
         }
         if(isset($_POST['status'])){
             $status=$_POST['status'];
+
             mysqli_query($conn,"UPDATE tbl_order SET order_status='$status' WHERE order_id=$id");
-            header('location:order_management_ad.php');
+            header('location:order_management_ad.php');                
+            
         }
         if(isset($_POST['payment_status'])){
             $status=$_POST['payment_status'];
-            mysqli_query($conn,"UPDATE tbl_order SET order_payment_status='$status' WHERE order_id=$id");
-            header('location:order_management_ad.php');
+ 
+                mysqli_query($conn,"UPDATE tbl_order SET order_payment_status='$status' WHERE order_id=$id");
+                header('location:order_management_ad.php');                
+            
+
         }
     ?>
 <!DOCTYPE html>
@@ -121,7 +126,7 @@
            <tr>
                <td><?php echo $value['product_id'] ?></td>
                <td><?php echo $value['product_name']?></td>
-               <td><img src="../../Image/<?php echo $value['product_image'] ?>" alt=""> </td>
+               <td><img src="../../img/product/<?php echo $value['product_image'] ?>" alt=""> </td>
                <td><?php echo $value['order_quantity'] ?></td>
                <td><?php echo $value['order_price']  ?></td>
            </tr>
@@ -129,23 +134,32 @@
 
        </table>
             <form method="POST" class="order_status_update">
-                <div style="width:500px">
+                <div style="width:600px">
+                <div>
                     <label for="">Trạng thái đơn hàng: </label>
+                </div>
+                    
                     <select name="status">
-                        <option value="1">Đặt hàng</option>
-                        <option value="2">Đang chuẩn bị hàng</option>
-                        <option value="3">Đơn hàng đang được vận chuyển</option>
-                        <option value="4">Giao hàng thành công</option> 
+                        <option value="1" <?php if($order['order_status']==1) echo "selected=\"selected\"" ?>>Đặt hàng</option>
+                        <option value="2" <?php if($order['order_status']==2) echo "selected=\"selected\"" ?>>Đang chuẩn bị hàng</option>
+                        <option value="3"<?php if($order['order_status']==3) echo "selected=\"selected\"" ?>>Đơn hàng đang được vận chuyển</option>
+                        <option value="4"<?php if($order['order_status']==4) echo "selected=\"selected\"" ?>>Giao hàng thành công</option> 
                     </select>
                 </div>
-         
 
-                <div style="width:500px">
+                <div>
+                <div style="width: 200px;">
                     <label for="">Trạng thái thanh toán: </label>
+                </div>
+                <div>
+                    
+           
                     <select name="payment_status">
-                        <option value="1">Chưa thanh toán</option>
-                        <option value="2">Đã thanh toán</option>
+                        <option value="1" <?php if($order['order_payment_status']==1) echo "selected=\"selected\"" ?>>Chưa thanh toán</option>
+                        <option value="2"<?php if($order['order_payment_status']==2) echo "selected=\"selected\"" ?>>Đã thanh toán</option>
                     </select>
+                </div>
+            
                 </div>
                 <button type="submit">Cập nhật</button>
             </form>

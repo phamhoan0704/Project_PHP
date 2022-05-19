@@ -1,7 +1,5 @@
 <?php
 include '../database/connect.php';
-//$id = 39;
-$id = $_GET['id'];
 
 if (!empty($id))
 
@@ -104,7 +102,8 @@ WHERE tbl_product.product_id='$id';";
                                 </div>
                                 <div class="btnsubmit">
                                     <input type="button" id="ipt1" value="Thêm vào giỏ hàng" name="addcart">
-                                    <input type="button" id="ipt2" value="Mua ngay" name="ordernow">
+                                    
+                                    <a href="./order.php?id=<?php echo $id?>?action=purchase"><input type="button" id="ipt2" value="Mua ngay" name="ordernow"></a>
                                 </div>
                             </div>
                         </form>
