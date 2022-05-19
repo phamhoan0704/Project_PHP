@@ -1,6 +1,6 @@
 <?php
 include '../database/connect.php';
-$id = 48;
+
 if (!empty($id))
 
 

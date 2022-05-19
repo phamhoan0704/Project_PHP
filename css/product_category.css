@@ -5,12 +5,13 @@
 }
 
 :root {
-    --main-width: 80%;
+    --main-width: 90%;
 }
 
 .container {
     width: var(--main-width);
     margin: auto;
+    padding: 0;
 }
 
 .breadcrumb {
@@ -52,12 +53,12 @@
 }
 
 .nav-menu {
-    width: 22%;
+    width: 20%;
     margin-right: 24px;
 }
 
 .nav-menu h4 {
-    font-size: 20px;
+    font-size: 18px;
     text-transform: uppercase;
     padding: 10px;
     font-weight: 500;
@@ -70,13 +71,13 @@
     list-style: none;
 }
 
-.nav-item {
+.nav-menu-list>li+li::before {
     border-top: 1px solid #e0e0e0;
 }
 
 .nav-item a {
     display: block;
-    padding: 12px 15px;
+    padding: 10px 15px;
     color: #555555;
     font-weight: 300;
     text-decoration: none;

@@ -1,4 +1,5 @@
 <?php
+    include 'header.php';
     
     include "../database/connect.php";
 
@@ -16,19 +17,19 @@
             $data1[] = $row;
         }
     $number = $data1[0]['number'];
-    $page = ceil($number / 3);
+    $page = ceil($number / 12);
 
     $current_page = 1;
     if(isset($_GET['page'])) {
         $current_page = $_GET['page'];
     }
 
-    $index = ($current_page-1)*3;
+    $index = ($current_page-1)*12;
     //Lấy bảng sp
-    $sql = "SELECT tbl_product.product_image, tbl_product.product_name, tbl_product.product_price, tbl_product.product_price_pre, (100-round((tbl_product.product_price / tbl_product.product_price_pre)*100,0)) as 'product_discount' 
+    $sql = "SELECT tbl_product.product_id, tbl_product.product_image, tbl_product.product_name, tbl_product.product_price, tbl_product.product_price_pre, (100-round((tbl_product.product_price / tbl_product.product_price_pre)*100,0)) as 'product_discount' 
             FROM tbl_product
             where product_name like '%$search_pdt%' 
-            LIMIT $index , 3
+            LIMIT $index , 12
             ";
     
     $result = mysqli_query($conn, $sql);
@@ -38,7 +39,6 @@
         {
             $data[] = $row;
         }
-
         mysqli_close($conn);     
 ?>
 
@@ -65,13 +65,13 @@
                         <div class="product__sale">
                             <span class="sale-lable">- '.$data[$i]['product_discount'].'%</span>
                         </div>
-                        <a href="" class="product__img" style="background-image: url(../img/product/'.$data[$i]['product_image'].');">
+                        <a href="productdetail.php?id='.$data[$i]['product_id'].'" class="product__img" style="background-image: url(../img/product/'.$data[$i]['product_image'].');">
                         </a>
                         <div class="product__detail">
-                            <a class="product__name">'.$data[$i]['product_name'].'</a>
+                            <a href="productdetail.php?id='.$data[$i]['product_id'].'" class="product__name">'.$data[$i]['product_name'].'</a>
                             <div class="product__price">
-                                <p class="pro-price__new">'.$data[$i]['product_price'].'</p>
-                                <p class="pro-price__old">'.$data[$i]['product_price_pre'].'</p>
+                                <p class="pro-price__new">'.number_format($data[$i]['product_price']).'đ</p>
+                                <p class="pro-price__old">'.number_format($data[$i]['product_price_pre']).'đ</p>
                             </div>
                         </div>
                     </div>';
@@ -84,7 +84,7 @@
         <ul class="pagination" style="margin: 24px, 0;">
             <?php
                 for($i=1; $i<=$page; $i++) {
-                    echo '<li class="page-item"><a class="page-link" href="?page='.$i.'">'.$i.'</a></li>';
+                    echo '<li class="page-item"><a class="page-link" href="?search_pdt='.$search_pdt.'&page='.$i.'">'.$i.'</a></li>';
                 }
             ?>
             <!-- <li class="page-item"><a class="page-link" href="#">Previous</a></li>
@@ -94,5 +94,6 @@
             <li class="page-item"><a class="page-link" href="#">Next</a></li> -->
         </ul>
     </div>
+    <?php include 'footer.php'; ?>
 </body>
 </html>
