@@ -116,7 +116,7 @@ html {
 }
 
 .header__search-btn {
-    height: 42px;
+    height: 40px;
     width: 56px;
     background-color: #009234;
     border-radius: 30px;
@@ -220,6 +220,7 @@ html {
 
 .header__cart-item:hover {
     background-color: #f0efef;
+    color: #333;
 }
 
 .header__cart-item-name:hover {
@@ -260,12 +261,13 @@ html {
 .header__cart-item-price {
     font-size: 14px;
     font-weight: 400;
+    color: #333;
 }
 
 .header__cart-notice {
     width: 16px;
     height: 16px;
-    line-height: 15px;
+    line-height: 14px;
     text-align: center;
     border-radius: 50%;
     border: 1px solid #009234;
@@ -279,11 +281,12 @@ html {
 
 .text-mini-cart {
     font-weight: 500;
-    padding: 10px 12px 10px 12px;
+    font-size: 15px;
     color: #3f3f3f;
     display: flex;
     justify-content: space-between;
     border-bottom: 1px solid #eeeeee;
+    padding: 0 12px 12px;
 }
 
 .text-left {
@@ -336,6 +339,7 @@ html {
 
 .cart-check-mini a span:hover {
     background: #01863f;
+    color: white;
 }
 
 .cart-button i {

@@ -42,13 +42,13 @@
                 <div class="block_content">
                     <ul class="bullet">
                         
-                        <li><a href="/pages/chinh-sach-bao-mat" title="Chính sách bảo mật">Chính sách bảo mật</a></li>
+                        <li><a href="" title="Chính sách bảo mật">Chính sách bảo mật</a></li>
                         
-                        <li><a href="/pages/chi-nh-sa-ch-thanh-toa-n" title="Chính sách thanh toán">Chính sách thanh toán</a></li>
+                        <li><a href="" title="Chính sách thanh toán">Chính sách thanh toán</a></li>
                         
-                        <li><a href="/pages/chi-nh-sa-ch-va-n-chuye-n" title="Chính sách vận chuyển">Chính sách vận chuyển</a></li>
+                        <li><a href="" title="Chính sách vận chuyển">Chính sách vận chuyển</a></li>
                         
-                        <li><a href="/pages/chinh-sach-doi-tra" title="Chính sách đổi trả">Chính sách đổi trả</a></li>
+                        <li><a href="" title="Chính sách đổi trả">Chính sách đổi trả</a></li>
                                         
                     </ul>
                 </div>

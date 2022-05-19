@@ -10,7 +10,7 @@
 <body>
         <div class="header">
             <h1 style="height: 100px;">NHÀ SÁCH TRÍ TUỆ</h1>
-        </div>
+        </div> 
         <div class="main_menu">
         <ul>
             <li><a href="" style="color: black;font-weight:bold;font-size:20px;"> Danh mục quản lí</a></li>

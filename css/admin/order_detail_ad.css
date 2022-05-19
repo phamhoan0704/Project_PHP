@@ -74,4 +74,6 @@ button{
 }
 .order_status_update select{
     height: 30px;
+    width: 300px;
+
 }

@@ -9,8 +9,6 @@
     if(!isset($_SESSION["user"])){
         header("location:login.php?action=cart");
    }else{
-    if($action=="add"){
-
         $username=$_SESSION['user'];
         $result=mysqli_fetch_array(mysqli_query($conn,"SELECT user_id FROM tbl_user WHERE user_name='$username'"));
         $user_id=$result['user_id'];
@@ -18,29 +16,38 @@
         $result2=mysqli_fetch_array(mysqli_query($conn,"SELECT * FROM tbl_cart WHERE user_id='$user_id'"));
         $cart_id=$result2['cart_id'];
 
+    if($action=="add"){
         $sql_pdt= "SELECT * FROM tbl_cart INNER JOIN tbl_cart_detail ON tbl_cart.cart_id=tbl_cart_detail.cart_id WHERE cart_id='$cart_id'"; 
-
         $old_pdt= mysqli_query($conn,$sql_pdt);
         if(mysqli_fetch_row($old_pdt)>0){
-
-            mysqli_query($conn,"UPDATE tbl_cart_detail SET tbl_cart_detail.product_quantity+=1 WHERE product_id='$id' AND cart_id='$cart_id'");
+            mysqli_query($conn,"UPDATE tbl_cart_detail SET tbl_cart_detail.product_amount+=1 WHERE product_id='$id' AND cart_id='$cart_id'");
         }
         else{            
-            mysqli_query($conn,"INSERT INTO tbl_cart_detail(cart_id,product_id,product_quantity) VALUES ('$cart_id,'$product_id','1')");
+            mysqli_query($conn,"INSERT INTO tbl_cart_detail(cart_id,product_id,product_quantity) VALUES ('$cart_id,'$product_id',1)");
         }
     }
     if($action=="update"){
-        mysqli_query($conn,"UPDATE tbl_cart_detail SET product_quantity=$quantity WHERE product_id='$id' AND cart_id='$cart_id'");
+        foreach($_GET['quantity'] as $product_id =>$quantity){
+            $pdt=mysqli_fetch_array(mysqli_query($conn,"SELECT product_quantity FROM tbl_product WHERE product_id=$product_id"));
+            $product_quantity=$pdt['product_quantity'];
+            if($quantity<=$product_quantity)
+                 mysqli_query($conn,"UPDATE tbl_cart_detail SET product_amount=$quantity WHERE product_id=$product_id AND cart_id=$cart_id");
+            else if($quantity>=$product_quantity){
+                mysqli_query($conn,"UPDATE tbl_cart_detail SET product_amount=$product_quantity WHERE product_id=$product_id AND cart_id=$cart_id");
 
+            }
+            
+       }
      }
      if($action=="delete"){
-        mysqli_query($conn,"DELETE FROM tbl_cart_detail WHERE product_id='$id'");
+        $product_id=$_GET["id"];
+        mysqli_query($conn,"DELETE FROM tbl_cart_detail WHERE product_id=$product_id AND cart_id=$cart_id");
+    }
+    if($action=="order"){
+        header('location:order.php');
+        die();
     }
    }
-
-
-    
-    
     //echo $id;
 
 
@@ -89,8 +96,8 @@
 
 
     header('location: cart_view.php');  
-    echo "<pre>";
-    print_r($_SESSION['cart'])
+    // echo "<pre>";
+    // print_r($_SESSION['cart'])
     //them moi vao gio hang
 
 
